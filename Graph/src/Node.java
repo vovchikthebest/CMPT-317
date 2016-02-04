@@ -1,9 +1,14 @@
 
 public class Node{
-	double xPos, yPos;
+	int xPos, yPos, index;
 	
-	public Node (double inX, double inY) {
+	public Node (int inX, int inY, int inIndex) {
 		xPos = inX;
 		yPos = inY;
+		index = inIndex;
+	}
+	
+	public Node (int inIndex) {
+		index = inIndex;
 	}
 }
