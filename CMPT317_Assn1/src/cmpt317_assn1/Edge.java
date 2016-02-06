@@ -22,4 +22,5 @@ public class Edge {
         destination = inDes;
         weight = inWeight;
     }
+    
 }
