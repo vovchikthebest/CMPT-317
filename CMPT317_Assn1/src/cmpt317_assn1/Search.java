@@ -37,7 +37,8 @@ public class Search {
                 visited[current.index] = true;
 
                 //Get the univisited neighbours and add them to the stack.
-                ArrayList<Node> Neighbours = searchGraph.getNeighbours(current);
+                //ArrayList<Node> Neighbours = searchGraph.getNeighbours(current);
+                ArrayList<Node> Neighbours = searchGraph.getBetterNeighbours(current, Finish);
                 int numNeighbours = 0;
                 for (int i = 0; i < Neighbours.size(); i++) {
                     if (!visited[Neighbours.get(i).index]) {

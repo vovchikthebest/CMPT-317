@@ -52,13 +52,42 @@ public class Graph {
      * @return 
      */
     public ArrayList<Node> getNeighbours(Node v1) {
-        ArrayList<Node> neighboorList = new ArrayList<Node>();
+        ArrayList<Node> neighbourList = new ArrayList<Node>();
         ArrayList<Edge> edgeList = this.nodeConnections[v1.index];
         
         for (int i = 0; i < edgeList.size(); i++){
-            neighboorList.add(edgeList.get(i).destination);
+            neighbourList.add(edgeList.get(i).destination);
         }
-        return neighboorList;
+        return neighbourList;
+    }
+    
+    /**
+     * Returns an arrayList of neighboring nodes with the best destination being the first
+     * @param v1
+     * @param v2 destination node
+     * @return 
+     */
+    public ArrayList<Node> getBetterNeighbours(Node v1, Node v2) {
+        ArrayList<Node> neighbourList = new ArrayList<Node>();
+        ArrayList<Edge> edgeList = this.nodeConnections[v1.index];
+        int highestTotal = -1;
+        
+        // Need largest element at the begining of the list
+        for (int i = 0; i < edgeList.size(); i++) {
+            Node destination = edgeList.get(i).destination;
+            int xPosDiff = Math.abs(v2.xPos - destination.xPos);
+            int yPosDiff = Math.abs(v2.yPos - destination.yPos);
+            int total = xPosDiff + yPosDiff;
+            
+            if (total >= highestTotal) {
+                highestTotal = total;
+                neighbourList.add(0, destination);
+            } else {
+                neighbourList.add(destination);
+            }
+        }
+        
+        return neighbourList;
     }
 
     public boolean edgeExists(Node v1, Node v2) {
@@ -93,7 +122,7 @@ public class Graph {
     }
 
     public static void main(String[] args) {
-        Graph test = new Graph(2);
+        Graph test = new Graph(1000);
 
         test.constructCityGraph();
 
