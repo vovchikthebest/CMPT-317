@@ -1,6 +1,8 @@
 package cmpt317_assn1;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.PriorityQueue;
 import java.util.Stack;
 
 public class Graph {
@@ -34,9 +36,10 @@ public class Graph {
 
     /**
      * Adds an edge between v1 and v2
+     *
      * @param v1
      * @param v2
-     * @return 
+     * @return
      */
     public boolean addEdge(Node v1, Node v2) {
         if (this.edgeExists(v1, v2)) {
@@ -54,37 +57,40 @@ public class Graph {
 
     /**
      * Returns a list of nodes that are dirrect neighbors of v1
+     *
      * @param v1
-     * @return 
+     * @return
      */
     public ArrayList<Node> getNeighbours(Node v1) {
         ArrayList<Node> neighbourList = new ArrayList<Node>();
         ArrayList<Edge> edgeList = this.nodeConnections[v1.index];
-        
-        for (int i = 0; i < edgeList.size(); i++){
+
+        for (int i = 0; i < edgeList.size(); i++) {
             neighbourList.add(edgeList.get(i).destination);
         }
         return neighbourList;
     }
-    
+
     /**
-     * Returns an arrayList of neighboring nodes with the best destination being the first
+     * Returns an arrayList of neighboring nodes with the best destination being
+     * the first
+     *
      * @param v1
      * @param v2 destination node
-     * @return 
+     * @return
      */
     public ArrayList<Node> getBetterNeighbours(Node v1, Node v2) {
         ArrayList<Node> neighbourList = new ArrayList<Node>();
         ArrayList<Edge> edgeList = this.nodeConnections[v1.index];
         int highestTotal = -1;
-        
+
         // Need largest element at the begining of the list
         for (int i = 0; i < edgeList.size(); i++) {
             Node destination = edgeList.get(i).destination;
             int xPosDiff = Math.abs(v2.xPos - destination.xPos);
             int yPosDiff = Math.abs(v2.yPos - destination.yPos);
             int total = xPosDiff + yPosDiff;
-            
+
             if (total >= highestTotal) {
                 highestTotal = total;
                 neighbourList.add(0, destination);
@@ -92,19 +98,20 @@ public class Graph {
                 neighbourList.add(destination);
             }
         }
-        
+
         return neighbourList;
     }
 
     /**
      * Checks if an edge exists between v1 and v2
+     *
      * @param v1
      * @param v2
-     * @return 
+     * @return
      */
     public boolean edgeExists(Node v1, Node v2) {
         ArrayList<Edge> edgeList = this.nodeConnections[v1.index];
-        
+
         for (int i = 0; i < edgeList.size(); i++) {
             if (edgeList.get(i).destination == v2) {
                 return true;
@@ -114,7 +121,8 @@ public class Graph {
     }
 
     /**
-     * Constructs a node city, each node is connected to at most 4 neighboring nodes
+     * Constructs a node city, each node is connected to at most 4 neighboring
+     * nodes
      */
     public void constructCityGraph() {
         for (int i = 0; i < nodesPerSide; i++) {
@@ -134,33 +142,42 @@ public class Graph {
 
     /**
      * Returns the number of nodes in the current graph
-     * @return 
+     *
+     * @return
      */
     public int getNumNodes() {
         return this.numNodes;
     }
 
     public static void main(String[] args) {
-        Graph test = new Graph(15);
+        Graph test = new Graph(4);
 
         test.constructCityGraph();
 
         System.out.println(test.getNeighbours(test.graphNodes[0]));
-        
+
         System.out.println(test.edgeExists(test.graphNodes[0], test.graphNodes[1]));
 
-        Stack<Node> test2 = Search.DepthFirst(test.graphNodes[0], test.graphNodes[2], test);
+        //Stack<Node> test2 = Search.DepthFirst(test.graphNodes[0], test.graphNodes[2], test);
 
-        System.out.println(test2);
-        
+        //System.out.println(test2);
+
         DrawGraph test3 = new DrawGraph(test);
-        
-        test3.setSize(400,300);
-        
-	
-	test3.setVisible(true);
-        
-        
+
+        test3.setSize(400, 300);
+
+        test3.setVisible(true);
+
         test3.paintAgain();
+
+        Comparator test5 = new DistanceComparator(test.graphNodes[2]);
+        PriorityQueue<Node> test4 = new PriorityQueue(test5);
+
+        test4.add(test.graphNodes[1]);
+        test4.add(test.graphNodes[4]);
+        test4.add(test.graphNodes[8]);
+        test4.add(test.graphNodes[15]);
+
+        while (!test4.isEmpty()){ System.out.print(test4.poll()); }
     }
 }
