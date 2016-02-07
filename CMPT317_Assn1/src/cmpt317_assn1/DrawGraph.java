@@ -25,7 +25,7 @@ public class DrawGraph extends JFrame{
     @Override
     public void paint (Graphics g) {
 	g.setColor(Color.black);
-        int scalingFactor = 15;
+        int scalingFactor = 20;
         int moveX = 30;
         int moveY = 40;
         

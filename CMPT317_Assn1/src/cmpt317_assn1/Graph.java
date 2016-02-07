@@ -141,7 +141,7 @@ public class Graph {
     }
 
     public static void main(String[] args) {
-        Graph test = new Graph(10);
+        Graph test = new Graph(15);
 
         test.constructCityGraph();
 
@@ -156,6 +156,7 @@ public class Graph {
         DrawGraph test3 = new DrawGraph(test);
         
         test3.setSize(400,300);
+        
 	
 	test3.setVisible(true);
         
