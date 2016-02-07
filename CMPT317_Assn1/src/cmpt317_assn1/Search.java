@@ -38,8 +38,8 @@ public class Search {
                 visited[current.index] = true;
 
                 //Get the univisited neighbours and add them to the stack.
-                //ArrayList<Node> Neighbours = searchGraph.getNeighbours(current);
-                ArrayList<Node> Neighbours = searchGraph.getBetterNeighbours(current, Finish);
+                ArrayList<Node> Neighbours = searchGraph.getNeighbours(current);
+                //ArrayList<Node> Neighbours = searchGraph.getBetterNeighbours(current, Finish);
                 int numNeighbours = 0;
                 for (int i = 0; i < Neighbours.size(); i++) {
                     if (!visited[Neighbours.get(i).index]) {
@@ -57,6 +57,25 @@ public class Search {
                 }
             }
         }
+        return null;
+    }
+    
+    public static Stack AStarSearch (Node start, Node finish, Graph g) {
+        DistanceComparator disComp = new DistanceComparator(finish);
+        PriorityQueue<Node> q = new PriorityQueue(disComp);
+        Stack<Node> result = new Stack();
+        q.add(start);
+        
+        while (!q.isEmpty()) {
+            Node current = q.poll();
+            q.addAll(g.getNeighbours(current));
+            result.push(current);
+            
+            if (current == finish) {
+                return result;
+            }
+        }
+        
         return null;
     }
 }

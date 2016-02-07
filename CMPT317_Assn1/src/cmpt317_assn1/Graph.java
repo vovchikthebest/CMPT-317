@@ -150,7 +150,7 @@ public class Graph {
     }
 
     public static void main(String[] args) {
-        Graph test = new Graph(4);
+        Graph test = new Graph(100);
 
         test.constructCityGraph();
 
@@ -158,9 +158,22 @@ public class Graph {
 
         System.out.println(test.edgeExists(test.graphNodes[0], test.graphNodes[1]));
 
-        //Stack<Node> test2 = Search.DepthFirst(test.graphNodes[0], test.graphNodes[2], test);
+        long startTime = System.nanoTime();
+        Stack<Node> test2 = Search.DepthFirst(test.graphNodes[0], test.graphNodes[72], test);
+        long endTime = System.nanoTime();
+        
+        long duration = (endTime - startTime)/1000000;  //divide by 1000000 to get milliseconds.
 
-        //System.out.println(test2);
+        System.out.println(test2);
+        System.out.println(String.valueOf(duration));
+        
+        startTime = System.nanoTime();
+        Stack<Node> test6 = Search.AStarSearch(test.graphNodes[0], test.graphNodes[72], test);
+        endTime = System.nanoTime();
+        
+        duration = (endTime - startTime)/1000000;
+        System.out.println(test6);
+        System.out.println(String.valueOf(duration));
 
         DrawGraph test3 = new DrawGraph(test);
 
