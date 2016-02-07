@@ -32,6 +32,12 @@ public class Graph {
         }
     }
 
+    /**
+     * Adds an edge between v1 and v2
+     * @param v1
+     * @param v2
+     * @return 
+     */
     public boolean addEdge(Node v1, Node v2) {
         if (this.edgeExists(v1, v2)) {
             return false;
@@ -90,6 +96,12 @@ public class Graph {
         return neighbourList;
     }
 
+    /**
+     * Checks if an edge exists between v1 and v2
+     * @param v1
+     * @param v2
+     * @return 
+     */
     public boolean edgeExists(Node v1, Node v2) {
         ArrayList<Edge> edgeList = this.nodeConnections[v1.index];
         
@@ -101,6 +113,9 @@ public class Graph {
         return false;
     }
 
+    /**
+     * Constructs a node city, each node is connected to at most 4 neighboring nodes
+     */
     public void constructCityGraph() {
         for (int i = 0; i < nodesPerSide; i++) {
             for (int j = 0; j < nodesPerSide; j++) {
@@ -117,12 +132,16 @@ public class Graph {
         }
     }
 
+    /**
+     * Returns the number of nodes in the current graph
+     * @return 
+     */
     public int getNumNodes() {
         return this.numNodes;
     }
 
     public static void main(String[] args) {
-        Graph test = new Graph(1000);
+        Graph test = new Graph(10);
 
         test.constructCityGraph();
 
@@ -133,5 +152,14 @@ public class Graph {
         Stack<Node> test2 = Search.DepthFirst(test.graphNodes[0], test.graphNodes[2], test);
 
         System.out.println(test2);
+        
+        DrawGraph test3 = new DrawGraph(test);
+        
+        test3.setSize(400,300);
+	
+	test3.setVisible(true);
+        
+        
+        test3.paintAgain();
     }
 }
