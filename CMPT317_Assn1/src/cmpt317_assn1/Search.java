@@ -78,4 +78,16 @@ public class Search {
         
         return null;
     }
+    
+    public static Stack CompleteSearch (Courier inCourier, Package inPackage, Graph g) {
+        Stack<Node> result = new Stack<Node>();
+        
+        result.addAll(Search.AStarSearch(inCourier.startPos, inPackage.currentNode, g));
+        result.pop();
+        result.addAll(Search.AStarSearch(inPackage.currentNode, inPackage.destinationNode, g));
+        result.pop();
+        result.addAll(Search.AStarSearch(inPackage.destinationNode, inCourier.startPos, g));
+
+        return result;
+    }
 }

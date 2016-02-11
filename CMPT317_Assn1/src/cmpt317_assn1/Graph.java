@@ -1,5 +1,6 @@
 package cmpt317_assn1;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.PriorityQueue;
@@ -150,7 +151,7 @@ public class Graph {
     }
 
     public static void main(String[] args) {
-        Graph test = new Graph(100);
+        Graph test = new Graph(5);
 
         test.constructCityGraph();
 
@@ -159,7 +160,7 @@ public class Graph {
         System.out.println(test.edgeExists(test.graphNodes[0], test.graphNodes[1]));
 
         long startTime = System.nanoTime();
-        Stack<Node> test2 = Search.DepthFirst(test.graphNodes[0], test.graphNodes[72], test);
+        Stack<Node> test2 = Search.DepthFirst(test.graphNodes[0], test.graphNodes[2], test);
         long endTime = System.nanoTime();
         
         long duration = (endTime - startTime)/1000000;  //divide by 1000000 to get milliseconds.
@@ -168,7 +169,7 @@ public class Graph {
         System.out.println(String.valueOf(duration));
         
         startTime = System.nanoTime();
-        Stack<Node> test6 = Search.AStarSearch(test.graphNodes[0], test.graphNodes[72], test);
+        Stack<Node> test6 = Search.AStarSearch(test.graphNodes[0], test.graphNodes[2], test);
         endTime = System.nanoTime();
         
         duration = (endTime - startTime)/1000000;
@@ -183,14 +184,12 @@ public class Graph {
 
         test3.paintAgain();
 
-        Comparator test5 = new DistanceComparator(test.graphNodes[2]);
-        PriorityQueue<Node> test4 = new PriorityQueue(test5);
 
-        test4.add(test.graphNodes[1]);
-        test4.add(test.graphNodes[4]);
-        test4.add(test.graphNodes[8]);
-        test4.add(test.graphNodes[15]);
-
-        while (!test4.isEmpty()){ System.out.print(test4.poll()); }
+        Courier testCourier = new Courier (test.graphNodes[1]);
+        Package testPackage = new Package (test.graphNodes[7], test.graphNodes[5]);
+        
+        Stack<Node> testComplete = Search.CompleteSearch(testCourier, testPackage, test);
+        
+        System.out.println(testComplete);
     }
 }

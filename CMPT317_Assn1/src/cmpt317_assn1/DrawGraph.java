@@ -7,6 +7,8 @@ package cmpt317_assn1;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.ArrayList;
+import java.util.Stack;
 import javax.swing.JFrame;
 
 /**
@@ -16,6 +18,9 @@ import javax.swing.JFrame;
 public class DrawGraph extends JFrame{
     
     Graph toDraw;
+    int scalingFactor = 20;
+    int moveX = 30;
+    int moveY = 40;
     
     public DrawGraph (Graph inGraph) {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -25,9 +30,6 @@ public class DrawGraph extends JFrame{
     @Override
     public void paint (Graphics g) {
 	g.setColor(Color.black);
-        int scalingFactor = 20;
-        int moveX = 30;
-        int moveY = 40;
         
         // Draw a line for every edge in the graph
 	for (int i = 0; i < toDraw.nodeConnections.length; i++) {
@@ -51,4 +53,15 @@ public class DrawGraph extends JFrame{
         this.repaint();
     }
     
+    public void drawPath(Stack<Node> path, Color inColor){
+        ArrayList<Node> pathList = new ArrayList(path);
+        Graphics g = this.getGraphics();
+        
+        for (int i = 1; i < (pathList.size()); i++) {
+            g.setColor(inColor);
+            g.drawLine(pathList.get(i-1).xPos * scalingFactor + moveX, pathList.get(i-1).yPos * scalingFactor + moveY,
+                    pathList.get(i).xPos * scalingFactor + moveX, pathList.get(i).yPos * scalingFactor + moveY);
+        }
+        
+    }
 }
