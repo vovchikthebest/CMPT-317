@@ -30,7 +30,7 @@ public class DrawGraph extends JFrame{
         super(Name);
         path = new ArrayList(inPath);
         courier = inCourier;
-        packages = new ArrayList(inPackage);
+        packages = inPackage;
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         toDraw = inGraph;
     }

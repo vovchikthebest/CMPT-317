@@ -21,7 +21,7 @@ public class CMPT317_Assn1 {
      */
     public static void main(String[] args) {
         int size = 5;
-        int numPackages = 5;
+        int numPackages = 3;
         int courierCapacity = 1;
         int numCouriers = 1;
         
