@@ -19,7 +19,7 @@ public class CMPT317_Assn1 {
      */
     public static void main(String[] args) {
         int size = 10;
-        int numPackages = 3;
+        int numPackages = 5;
         int courierCapacity = 1;
         int numCouriers = 1;
         
@@ -39,13 +39,36 @@ public class CMPT317_Assn1 {
         packages.add(testPackage2);
         packages.add(testPackage3);
         
+        // DFS Search with single package single carrier
         long startTime = System.nanoTime();
-        Stack<Node> resultNodes = Search.CompleteSearch(testCourier, packages, testGraph);
+        Stack<Node> resultNodes = Search.DepthFirst(testCourier.startPos, testPackage1.currentNode, testGraph);
         long endTime = System.nanoTime();
         
         long duration = (endTime - startTime)/1000000;
-
         
+        System.out.println("--- A* Search with sinple package single carrier ---");
+        System.out.println("Path: " + resultNodes);
+        System.out.println("Time (ms): " + String.valueOf(duration));
+        
+        // A* Search with sinple package single carrier
+        startTime = System.nanoTime();
+        resultNodes = Search.CompleteSearch(testCourier, testPackage1, testGraph);
+        endTime = System.nanoTime();
+        
+        duration = (endTime - startTime)/1000000;
+        
+        System.out.println("--- A* Search with sinple package single carrier ---");
+        System.out.println("Path: " + resultNodes);
+        System.out.println("Time (ms): " + String.valueOf(duration));
+        
+        // A* Search with multiple packages
+        startTime = System.nanoTime();
+        resultNodes = Search.CompleteSearch(testCourier, packages, testGraph);
+        endTime = System.nanoTime();
+        
+        duration = (endTime - startTime)/1000000;
+
+        System.out.println("--- A* search with multiple packages single carrier ---");
         System.out.println("Path: " + resultNodes);
         System.out.println("Time (ms): " + String.valueOf(duration));
         
