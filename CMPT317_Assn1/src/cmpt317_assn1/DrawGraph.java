@@ -19,8 +19,8 @@ public class DrawGraph extends JFrame{
     
     Graph toDraw;
     int scalingFactor = 20;
-    int moveX = 30;
-    int moveY = 40;
+    int moveX = 40;
+    int moveY = 50;
     
     public DrawGraph (Graph inGraph) {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -44,8 +44,8 @@ public class DrawGraph extends JFrame{
             //int nodeWidth = Math.max(width, f.stringWidth(n.name)+width/2);
             g.setColor(Color.green);
             g.fillOval(graphNode.xPos * scalingFactor - 10/2 + moveX, graphNode.yPos * scalingFactor - 10/2 + moveY, 10, 10);
-            /*g.drawString(n.name, n.x-f.stringWidth(n.name)/2,
-            n.y+f.getHeight()/2);*/
+            g.setColor(Color.red);
+            g.drawString(String.valueOf(graphNode.index), graphNode.xPos * scalingFactor - 10/2 + moveX, graphNode.yPos * scalingFactor - 8/2 + moveY);
         }
     }
     

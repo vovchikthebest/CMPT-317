@@ -151,45 +151,6 @@ public class Graph {
     }
 
     public static void main(String[] args) {
-        Graph test = new Graph(5);
-
-        test.constructCityGraph();
-
-        System.out.println(test.getNeighbours(test.graphNodes[0]));
-
-        System.out.println(test.edgeExists(test.graphNodes[0], test.graphNodes[1]));
-
-        long startTime = System.nanoTime();
-        Stack<Node> test2 = Search.DepthFirst(test.graphNodes[0], test.graphNodes[2], test);
-        long endTime = System.nanoTime();
         
-        long duration = (endTime - startTime)/1000000;  //divide by 1000000 to get milliseconds.
-
-        System.out.println(test2);
-        System.out.println(String.valueOf(duration));
-        
-        startTime = System.nanoTime();
-        Stack<Node> test6 = Search.AStarSearch(test.graphNodes[0], test.graphNodes[2], test);
-        endTime = System.nanoTime();
-        
-        duration = (endTime - startTime)/1000000;
-        System.out.println(test6);
-        System.out.println(String.valueOf(duration));
-
-        DrawGraph test3 = new DrawGraph(test);
-
-        test3.setSize(400, 300);
-
-        test3.setVisible(true);
-
-        test3.paintAgain();
-
-
-        Courier testCourier = new Courier (test.graphNodes[1]);
-        Package testPackage = new Package (test.graphNodes[7], test.graphNodes[5]);
-        
-        Stack<Node> testComplete = Search.CompleteSearch(testCourier, testPackage, test);
-        
-        System.out.println(testComplete);
     }
 }

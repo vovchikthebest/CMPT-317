@@ -12,9 +12,15 @@ package cmpt317_assn1;
 public class Package {
     Node currentNode;
     Node destinationNode;
+    boolean delivered;
     
     public Package (Node inCur, Node inDest) {
         currentNode = inCur;
         destinationNode = inDest;
+        delivered = false;
+    }
+
+    public void setDelivered() {
+        delivered = true;
     }
 }

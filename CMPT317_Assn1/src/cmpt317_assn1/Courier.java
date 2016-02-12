@@ -5,14 +5,46 @@
  */
 package cmpt317_assn1;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Vladimir
  */
 public class Courier {
+
     Node startPos;
-    
-    public Courier (Node inStart) {
+    Node currentPosition;
+    int capacity;
+    ArrayList<Package> packages;
+
+    public Courier(Node inStart, int inCapacity) {
         startPos = inStart;
+        currentPosition = inStart;
+        capacity = inCapacity;
+        packages = new ArrayList(capacity);
+    }
+
+    public boolean addPackage(Package inPackage) {
+        if (capacity != 0) {
+            packages.add(inPackage);
+            capacity--;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean deliverPackage(Package inPackage) {
+        if (packages.contains(inPackage)) {
+            packages.remove(inPackage);
+            inPackage.setDelivered();
+            capacity++;
+            return true;
+        }
+        return false;
+    }
+
+    public void moveCourier(Node inNode) {
+        currentPosition = inNode;
     }
 }
