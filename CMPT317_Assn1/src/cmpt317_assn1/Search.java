@@ -117,6 +117,13 @@ public class Search {
         return result;
     }
 
+    /**
+     * Complete search for multiple packages and 1 courrier
+     * @param inCourier
+     * @param inPackage
+     * @param g
+     * @return 
+     */
     public static Stack CompleteSearch(Courier inCourier, ArrayList<Package> inPackage, Graph g) {
         Stack<Node> result = new Stack<Node>();
         Package bestPackage = inPackage.get(0);
@@ -167,4 +174,38 @@ public class Search {
 
         return result;
     }
+    
+    /* public static Stack CompleteSearch(ArrayList<Courier> inCourier, ArrayList<Package> inPackage, Graph g) {
+        Stack<Node>[] result = new Stack[inCourier.size()];
+        Package bestPackage = inPackage.get(0);
+        boolean delivering = false;
+        
+        int shortestDistance = 999;
+        for (int i = 0; i < inCourier.size(); i++ ) {
+            for (int j = 0; j < inPackage.size(); j++) {
+                int curDistance = Math.abs(inCourier.get(i).packages.get(j).destinationNode.xPos - inCourier.get(i).currentPosition.xPos)
+                        + Math.abs(inCourier.get(i).packages.get(j).destinationNode.yPos - inCourier.get(i).currentPosition.yPos);
+                if (curDistance < shortestDistance) {
+                    shortestDistance = curDistance;
+                    bestPackage = inCourier.get(i).packages.get(i);
+                    delivering = true;
+                }
+            }
+            
+            if (inCourier.get(i).capacity != 0) {
+                for (int j = 0; j < (inPackage.size()); j++) {
+                    int curDistance = Math.abs(inPackage.get(j).currentNode.xPos - inCourier.get(i).currentPosition.xPos)
+                            + Math.abs(inPackage.get(j).currentNode.yPos - inCourier.get(i).currentPosition.yPos);
+                    if (curDistance < shortestDistance) {
+                        shortestDistance = curDistance;
+                        bestPackage = inPackage.get(j);
+                        delivering = false;
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+    */
 }
