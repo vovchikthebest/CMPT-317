@@ -18,18 +18,26 @@ import javax.swing.JFrame;
 public class DrawGraph extends JFrame{
     
     Graph toDraw;
-    int scalingFactor = 20;
+    ArrayList<Node> path;
+    Courier courier;
+    ArrayList<Package> packages;
+    int scalingFactor = 30;
     int moveX = 40;
     int moveY = 50;
     
-    public DrawGraph (Graph inGraph) {
+    public DrawGraph (Graph inGraph, Stack<Node> inPath, Courier inCourier, 
+            ArrayList<Package> inPackage, String Name) {
+        super(Name);
+        path = new ArrayList(inPath);
+        courier = inCourier;
+        packages = new ArrayList(inPackage);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         toDraw = inGraph;
     }
     
     @Override
     public void paint (Graphics g) {
-	g.setColor(Color.black);
+	g.setColor(Color.lightGray);
         
         // Draw a line for every edge in the graph
 	for (int i = 0; i < toDraw.nodeConnections.length; i++) {
@@ -39,29 +47,36 @@ public class DrawGraph extends JFrame{
                         toDraw.nodeConnections[i].get(j).destination.yPos * scalingFactor + moveY);
             }
 	}
+        
+        // Draw a line for every path traveled in the graph
+        for (int i = 1; i < (path.size()); i++) {
+            g.setColor(Color.black);
+            g.drawLine(path.get(i-1).xPos * scalingFactor + moveX, path.get(i-1).yPos * scalingFactor + moveY,
+                    path.get(i).xPos * scalingFactor + moveX, path.get(i).yPos * scalingFactor + moveY);
+        }
 
+        // Draw a dot for every node in the graph
         for (Node graphNode : toDraw.graphNodes) {
             //int nodeWidth = Math.max(width, f.stringWidth(n.name)+width/2);
-            g.setColor(Color.green);
+            g.setColor(Color.black);
             g.fillOval(graphNode.xPos * scalingFactor - 10/2 + moveX, graphNode.yPos * scalingFactor - 10/2 + moveY, 10, 10);
             g.setColor(Color.red);
             g.drawString(String.valueOf(graphNode.index), graphNode.xPos * scalingFactor - 10/2 + moveX, graphNode.yPos * scalingFactor - 8/2 + moveY);
+        }
+        
+        // Draw a dot for every courier node and every package node
+        g.setColor(Color.blue);
+        g.fillOval(courier.startPos.xPos * scalingFactor - 10/2 + moveX, courier.startPos.yPos * scalingFactor - 10/2 + moveY, 10, 10);
+        
+        for (int i = 0; i < packages.size(); i++ ) {
+            g.setColor(Color.red);
+            g.fillOval(packages.get(i).currentNode.xPos * scalingFactor - 10/2 + moveX, packages.get(i).currentNode.yPos * scalingFactor - 10/2 + moveY, 10, 10);
+            g.setColor(Color.green);
+            g.fillOval(packages.get(i).destinationNode.xPos * scalingFactor - 10/2 + moveX, packages.get(i).destinationNode.yPos * scalingFactor - 10/2 + moveY, 10, 10);
         }
     }
     
     public void paintAgain() {
         this.repaint();
-    }
-    
-    public void drawPath(Stack<Node> path, Color inColor){
-        ArrayList<Node> pathList = new ArrayList(path);
-        Graphics g = this.getGraphics();
-        
-        for (int i = 1; i < (pathList.size()); i++) {
-            g.setColor(inColor);
-            g.drawLine(pathList.get(i-1).xPos * scalingFactor + moveX, pathList.get(i-1).yPos * scalingFactor + moveY,
-                    pathList.get(i).xPos * scalingFactor + moveX, pathList.get(i).yPos * scalingFactor + moveY);
-        }
-        
     }
 }
