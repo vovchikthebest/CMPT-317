@@ -16,42 +16,45 @@ public class Game {
     ArrayList<Pawn> teamWhite, teamBlack;
     
     public Game () {
-        board = new Board();
+        board = new Board(5);
         
         // Initialize white
         for (int i = 0; i < board.size; i++) {
-            Pawn temp = new Pawn(i, 0, false);
-            teamWhite.add(temp);
-            board.gameBoard[i][0].setOccupant(temp);
+            board.gameBoard[i][0] = 1;
         }
         
         // Initialize black
         for (int i = 0; i < board.size; i++) {
-            Pawn temp = new Pawn(i, board.size-1, true);
-            teamBlack.add(temp); 
-            board.gameBoard[i][board.size-1].setOccupant(temp);
+            board.gameBoard[i][board.size-1] = 2;
         }
+        
+        this.createPawnArray(this.board);
     }
     
-    public ArrayList<Square> pawnSuccessor(Pawn inPawn) {
-        ArrayList<Square> possibleMoves = new ArrayList<Square>();
+    public ArrayList<Board> pawnSuccessor(Pawn inPawn) {
+        ArrayList<Board> possibleMoves = new ArrayList<Board>();
         // Check if the pawn can move forward
         if (inPawn.team == false) { // white team
-            Pawn temp = board.gameBoard[inPawn.x][inPawn.y+1].occupant;
-            if (temp == null) {
-                possibleMoves.add(board.gameBoard[inPawn.x][inPawn.y+1]);
+            int temp = board.gameBoard[inPawn.x][inPawn.y+1];
+            if (temp == 0) {
+                Board cloned = this.board.clone();
+                cloned.gameBoard[inPawn.x][inPawn.y] = 0;
+                cloned.gameBoard[inPawn.x][inPawn.y+1] = 1;
+                possibleMoves.add(cloned);
             }
         } else { 
-            Pawn temp = board.gameBoard[inPawn.x][inPawn.y-1].occupant;
-            if (temp == null) {
-                possibleMoves.add(board.gameBoard[inPawn.x][inPawn.y-1]);
+            int temp = board.gameBoard[inPawn.x][inPawn.y-1];
+            if (temp == 0) {
+                Board cloned = this.board.clone();
+                cloned.gameBoard[inPawn.x][inPawn.y] = 0;
+                cloned.gameBoard[inPawn.x][inPawn.y-1] = 2;
+                possibleMoves.add(cloned);
             }
         }
+        
         // Check if the pawn can make a diagnoal move
         if (inPawn.team == false) {
-            Square diagonal1, diagonal2;
-            diagonal1 = new Square();
-            diagonal2 = new Square();
+            int diagonal1 = 0, diagonal2 = 0;
             if (inPawn.x-1 >= 0) { // check left diagonal
                 diagonal1 = board.gameBoard[inPawn.x-1][inPawn.y+1];
             }
@@ -60,20 +63,75 @@ public class Game {
                 diagonal2 = board.gameBoard[inPawn.x+1][inPawn.y+1];
             }
             
-            if (diagonal1.occupant != null) { // check if the left diagonal has an enemy pawn
-                if (diagonal1.occupant.team = true) {
-                    possibleMoves.add(diagonal1);
-                }
+            if (diagonal1 == 2) { // check if the left diagonal has an enemy pawn
+                Board cloned = this.board.clone();
+                cloned.gameBoard[inPawn.x][inPawn.y] = 0;
+                cloned.gameBoard[inPawn.x-1][inPawn.y+1] = 1;
+                possibleMoves.add(cloned);
             }
             
-            if (diagonal2.occupant != null) {   // check if the right diagonal has an enemy pawn
-                if (diagonal2.occupant.team = true) {
-                    possibleMoves.add(diagonal2);
-                }
+            if (diagonal2 == 2) {   // check if the right diagonal has an enemy pawn
+                Board cloned = this.board.clone();
+                cloned.gameBoard[inPawn.x][inPawn.y] = 0;
+                cloned.gameBoard[inPawn.x+1][inPawn.y+1] = 1;
+                possibleMoves.add(cloned);
             }
-        } else {
+        } else {    // Diagnoal moves for black
+            int diagonal1 = 0, diagonal2 = 0;
+            if (inPawn.x-1 >= 0) { // check right diagonal
+                diagonal1 = board.gameBoard[inPawn.x-1][inPawn.y-1];
+            }
             
+            if (inPawn.x+1 <= board.size-1) { // check left diagonal
+                diagonal2 = board.gameBoard[inPawn.x+1][inPawn.y-1];
+            }
+            
+            if (diagonal1 == 1) { // check if the right diagonal has an enemy pawn
+                Board cloned = this.board.clone();
+                cloned.gameBoard[inPawn.x][inPawn.y] = 0;
+                cloned.gameBoard[inPawn.x-1][inPawn.y-1] = 1;
+                possibleMoves.add(cloned);
+            }
+            
+            if (diagonal2 == 1) {   // check if the left diagonal has an enemy pawn
+                Board cloned = this.board.clone();
+                cloned.gameBoard[inPawn.x][inPawn.y] = 0;
+                cloned.gameBoard[inPawn.x+1][inPawn.y-1] = 1;
+                possibleMoves.add(cloned);
+            }
         }
         return possibleMoves;
+    }
+    
+    /**
+     * Calls pawnSuccessor for all pawns on the board. Puts all moves into the tree.
+     */
+    public void boardSuccessor (Board curBoard){
+        this.createPawnArray(curBoard);
+        
+        // Get successors for white
+        for (int i = 0; i < teamWhite.size(); i++) {
+            this.pawnSuccessor(teamWhite.get(i));
+        }
+        
+        // Get successors for black
+        for (int i = 0; i < teamBlack.size(); i++) {
+            this.pawnSuccessor(teamBlack.get(i));
+        }
+    }
+    
+    // Creates the arrays of pawns from the board given
+    public void createPawnArray (Board curBoard) {
+        for (int i = 0; i < curBoard.size; i++) {
+            for (int j = 0; j < curBoard.size; j++) {
+                if (curBoard.gameBoard[i][j] == 1) {
+                    Pawn temp = new Pawn(i, j, false);
+                    teamWhite.add(temp);
+                } else if (curBoard.gameBoard[i][j] == 2) {
+                    Pawn temp = new Pawn(i, j, false);
+                    teamBlack.add(temp);
+                }
+            }
+        }
     }
 }

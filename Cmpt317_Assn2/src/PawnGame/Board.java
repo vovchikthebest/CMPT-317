@@ -10,19 +10,23 @@ package PawnGame;
  * @author Vladimir
  */
 public class Board {
-    int size = 5;
-    Square[][] gameBoard;
+    int size;
+    int[][] gameBoard; // 0 - empty, 1 - white, 2 - black
     
-    public Board () {
-        gameBoard = new Square[size][size];
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                gameBoard[i][j] = new Square();
-            }
-        }
+    public Board (int inSize) {
+        size = inSize;
+        gameBoard = new int[size][size];
     }
     
-    public Square getSquare (int x, int y) {
+    public int getSquare (int x, int y) {
         return gameBoard[x][y];
+    }
+    
+    public Board clone () {
+        Board temp = new Board(this.size);
+        
+        temp.gameBoard = this.gameBoard.clone();
+        
+        return temp;
     }
 }
