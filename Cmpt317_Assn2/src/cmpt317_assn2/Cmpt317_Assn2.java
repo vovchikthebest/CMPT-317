@@ -5,6 +5,10 @@
  */
 package cmpt317_assn2;
 
+import PawnGame.Board;
+import PawnGame.Game;
+import java.util.ArrayList;
+
 /**
  *
  * @author Vladimir
@@ -15,7 +19,10 @@ public class Cmpt317_Assn2 {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        Game test = new Game(5);
+        ArrayList<Board> tester = test.boardSuccessor(test.board);
+        
+        System.out.println(tester);
     }
     
 }

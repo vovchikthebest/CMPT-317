@@ -12,11 +12,11 @@ import java.util.ArrayList;
  * @author Vladimir
  */
 public class Game {
-    Board board;
+    public Board board;
     ArrayList<Pawn> teamWhite, teamBlack;
     
-    public Game () {
-        board = new Board(5);
+    public Game (int size) {
+        board = new Board(size);
         
         // Initialize white
         for (int i = 0; i < board.size; i++) {
@@ -27,6 +27,7 @@ public class Game {
         for (int i = 0; i < board.size; i++) {
             board.gameBoard[i][board.size-1] = 2;
         }
+      
         
         this.createPawnArray(this.board);
     }
@@ -106,29 +107,35 @@ public class Game {
     /**
      * Calls pawnSuccessor for all pawns on the board. Puts all moves into the tree.
      */
-    public void boardSuccessor (Board curBoard){
+    public ArrayList<Board> boardSuccessor (Board curBoard){
         this.createPawnArray(curBoard);
+        ArrayList<Board> result = new ArrayList<Board>();
         
         // Get successors for white
         for (int i = 0; i < teamWhite.size(); i++) {
-            this.pawnSuccessor(teamWhite.get(i));
+            result.addAll(this.pawnSuccessor(teamWhite.get(i)));
         }
         
         // Get successors for black
         for (int i = 0; i < teamBlack.size(); i++) {
-            this.pawnSuccessor(teamBlack.get(i));
+            result.addAll(this.pawnSuccessor(teamBlack.get(i)));
         }
+        
+        return result;
     }
     
     // Creates the arrays of pawns from the board given
     public void createPawnArray (Board curBoard) {
+        teamWhite = new ArrayList<Pawn>();
+        teamBlack = new ArrayList<Pawn>();
+        
         for (int i = 0; i < curBoard.size; i++) {
             for (int j = 0; j < curBoard.size; j++) {
                 if (curBoard.gameBoard[i][j] == 1) {
                     Pawn temp = new Pawn(i, j, false);
                     teamWhite.add(temp);
                 } else if (curBoard.gameBoard[i][j] == 2) {
-                    Pawn temp = new Pawn(i, j, false);
+                    Pawn temp = new Pawn(i, j, true);
                     teamBlack.add(temp);
                 }
             }

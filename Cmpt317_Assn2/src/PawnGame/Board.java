@@ -25,7 +25,11 @@ public class Board {
     public Board clone () {
         Board temp = new Board(this.size);
         
-        temp.gameBoard = this.gameBoard.clone();
+        for (int i = 0; i < this.size; i++) {
+            for (int j = 0; j < this.size; j++) {
+                temp.gameBoard[i][j] = this.gameBoard[i][j];
+            }
+        }
         
         return temp;
     }
@@ -68,5 +72,21 @@ public class Board {
         }
         
         return 0;
+    }
+    
+    /**
+     * Converts the current board to a string
+     * @return 
+     */
+    public String toString() {
+        String result = "";
+        for (int i = this.size-1; i >= 0; i--) {
+            for (int j = 0; j < this.size; j++) {
+                result += String.valueOf(this.gameBoard[j][i]) + " ";
+            }
+            result += "\n";
+        }
+        
+        return result;
     }
 }
