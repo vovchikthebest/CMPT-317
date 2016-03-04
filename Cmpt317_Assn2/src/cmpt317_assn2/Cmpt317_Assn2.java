@@ -7,6 +7,7 @@ package cmpt317_assn2;
 
 import PawnGame.Board;
 import PawnGame.Game;
+import Tree.TreeNode;
 import java.util.ArrayList;
 
 /**
@@ -20,7 +21,7 @@ public class Cmpt317_Assn2 {
      */
     public static void main(String[] args) {
         Game test = new Game(5);
-        ArrayList<Board> tester = test.boardSuccessor(test.board);
+        TreeNode<Board> tester = test.Successor();
         
         System.out.println(tester);
     }

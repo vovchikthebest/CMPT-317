@@ -12,15 +12,15 @@ import java.util.ArrayList;
  * @author Vladimir
  */
 public class TreeNode<T> {
-    T data;
-    ArrayList<TreeNode> childNodes;
+    public T data;
+    public ArrayList<TreeNode> childNodes;
     
     public TreeNode(T inData) {
         this.data = inData;
     }
     
     public void addChild(T inChild) {
-        TreeNode childTree = new TreeNode(inChild);
+        TreeNode<T> childTree = new TreeNode<T>(inChild);
         this.childNodes.add(childTree);
     }
     

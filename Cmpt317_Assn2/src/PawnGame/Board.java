@@ -12,10 +12,14 @@ package PawnGame;
 public class Board {
     int size;
     int[][] gameBoard; // 0 - empty, 1 - white, 2 - black
+    int winner; // -1 - black, 0 - tie, 1 - white
+    boolean finished; // true - game finished, false - game not finished
     
     public Board (int inSize) {
         size = inSize;
         gameBoard = new int[size][size];
+        winner = 0;
+        finished = false;
     }
     
     public int getSquare (int x, int y) {
