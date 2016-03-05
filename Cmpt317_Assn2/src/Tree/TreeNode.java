@@ -5,26 +5,29 @@
  */
 package Tree;
 
+import PawnGame.Board;
 import java.util.ArrayList;
 
 /**
  *
  * @author Vladimir
  */
-public class TreeNode<T> {
-    public T data;
+public class TreeNode {
+    public Board data;
+    public int value; // Stores the min max value of the node
     public ArrayList<TreeNode> childNodes;
     
-    public TreeNode(T inData) {
+    public TreeNode(Board inData) {
         this.data = inData;
+        value = 0;
     }
     
-    public void addChild(T inChild) {
-        TreeNode<T> childTree = new TreeNode<T>(inChild);
+    public void addChild(Board inChild) {
+        TreeNode childTree = new TreeNode(inChild);
         this.childNodes.add(childTree);
     }
     
-    public void addBulk(ArrayList<T> children) {
+    public void addBulk(ArrayList<Board> children) {
         for (int i = 0; i < children.size(); i++) {
             this.addChild(children.get(i));
         }

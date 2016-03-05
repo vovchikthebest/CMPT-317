@@ -6,7 +6,8 @@
 package PawnGame;
 
 /**
- *
+ * Stores the current state of the GameBoard
+ * 
  * @author Vladimir
  */
 public class Board {
@@ -14,12 +15,24 @@ public class Board {
     int[][] gameBoard; // 0 - empty, 1 - white, 2 - black
     int winner; // -1 - black, 0 - tie, 1 - white
     boolean finished; // true - game finished, false - game not finished
+    boolean turn; // false - white, true - black
     
-    public Board (int inSize) {
+    public Board (int inSize, boolean inTurn) {
         size = inSize;
         gameBoard = new int[size][size];
         winner = 0;
         finished = false;
+        turn = inTurn;
+        
+        // Initialize white
+        for (int i = 0; i < this.size; i++) {
+            this.gameBoard[i][0] = 1;
+        }
+
+        // Initialize black
+        for (int i = 0; i < this.size; i++) {
+            this.gameBoard[i][this.size - 1] = 2;
+        }
     }
     
     public int getSquare (int x, int y) {
@@ -27,7 +40,7 @@ public class Board {
     }
     
     public Board clone () {
-        Board temp = new Board(this.size);
+        Board temp = new Board(this.size, !this.turn);
         
         for (int i = 0; i < this.size; i++) {
             for (int j = 0; j < this.size; j++) {
@@ -36,46 +49,6 @@ public class Board {
         }
         
         return temp;
-    }
-    
-    /**
-     * Determine if there is a winner on the current board
-     * @return 1 - white wins, -1 - black wins, 0 - none/tie
-     */
-    public int determineWinner() {
-        int countWhite = 0, countBlack = 0;
-        for (int i = 0; i < this.size; i++) {
-            for (int j = 0; j < this.size; j++) {
-                // Count the white and black pieces to determine winner
-                switch(this.gameBoard[i][j]) {
-                    case(1):
-                        countWhite++;
-                        break;
-                    case(2):
-                        countBlack++;
-                        break;
-                }
-                
-                // Check if any of the white/black pieces have reached their endzones
-                if (i == 0) {
-                    if (this.gameBoard[i][j] == 2) {    // if a black piece reached endzone
-                        return -1;
-                    }
-                } else if (i == this.size - 1) {
-                    if (this.gameBoard[i][j] == 1) {    // if a white piece reached endzone
-                        return 1;
-                    }
-                }
-            }
-        }
-        
-        if (countWhite == 0) {
-            return -1;  // Black wins
-        } else if (countBlack == 0) {
-            return 1;   // White wins
-        }
-        
-        return 0;
     }
     
     /**
@@ -92,5 +65,13 @@ public class Board {
         }
         
         return result;
+    }
+    
+    public boolean getTurn () {
+        return this.turn;
+    }
+    
+    public boolean getFinished() {
+        return this.finished;
     }
 }
