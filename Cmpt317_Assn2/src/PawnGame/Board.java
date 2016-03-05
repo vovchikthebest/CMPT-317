@@ -10,7 +10,7 @@ package PawnGame;
  * 
  * @author Vladimir
  */
-public class Board {
+public class Board implements GameState{
     int size;
     int[][] gameBoard; // 0 - empty, 1 - white, 2 - black
     int winner; // -1 - black, 0 - tie, 1 - white
@@ -73,5 +73,21 @@ public class Board {
     
     public boolean getFinished() {
         return this.finished;
+    }
+    
+    public void display () {
+        System.out.printf(this.toString());
+    }
+    
+    public boolean equals(GameState o) {
+        Board compare = (Board) o;
+        for (int i = 0; i < this.size; i++) {
+            for (int j = 0; j < this.size; j++) {
+                if (this.gameBoard[i][j] != compare.gameBoard[i][j]) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }
