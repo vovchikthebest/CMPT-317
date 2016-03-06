@@ -26,7 +26,7 @@ public class Cmpt317_Assn2 {
         Board testBoard = new Board(6, false);
         MinMax testMinMax = new MinMax(test);
         
-        int size = 10;
+        int size = 24;
     
         GameState[] move = new GameState[size];
     

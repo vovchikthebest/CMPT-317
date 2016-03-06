@@ -75,6 +75,10 @@ public class Board implements GameState{
         return this.finished;
     }
     
+    public int getSize() {
+        return this.size;
+    }
+    
     public void display () {
         System.out.printf(this.toString());
     }

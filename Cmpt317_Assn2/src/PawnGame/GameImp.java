@@ -6,10 +6,7 @@
 
 package PawnGame;
 
-import Tree.TreeNode;
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
 
 /**
  *
@@ -19,8 +16,8 @@ public class GameImp implements Game {
 
     ArrayList<Pawn> teamWhite, teamBlack;
     
-    private static final int MAX = 10;
-    private static final int MIN = -10;
+    private static final int MAX = 30;
+    private static final int MIN = -30;
 
     public ArrayList<Board> pawnSuccessor(Pawn inPawn, Board curBoard) {
         ArrayList<Board> possibleMoves = new ArrayList<Board>();
@@ -163,29 +160,8 @@ public class GameImp implements Game {
 
         return result;
     }
-
-    /**
-     * Ultimate successor function that returns the tree of possible moves
-     */
-    /* public TreeNode<Board> Successor() {
-        TreeNode<Board> resultTree = new TreeNode<Board>(this.board);
-        ArrayList<Board> successors;
-        //turn = true;
-        LinkedList<TreeNode> list = new LinkedList<TreeNode>();
-        list.add(resultTree);
-        
-        //Breadth first search
-        while (!list.isEmpty()) {
-            TreeNode curEl = list.remove();
-            successors = this.boardSuccessor((Board)curEl.data);
-            curEl.addBulk(successors);
-            list.addAll(curEl.childNodes);
-            //turn = false;
-        }
-        return resultTree;
-    }
-    */
     
+    @Override
     public int Utility (GameState s) {
         Board curBoard = (Board) s; 
         return curBoard.winner;
@@ -195,8 +171,33 @@ public class GameImp implements Game {
         Board curBoard = (Board) s;
         this.createPawnArray(curBoard);
         
+        // Amount of pawns left on each team
         int sizeDif = teamWhite.size() - teamBlack.size();
         
+        // Amount of distance left to the end zones
+        int whiteDis = 0, blackDis = 0;
+        for (int i = 0; i < teamWhite.size(); i++) {    // White pawns.
+            whiteDis += (curBoard.size - 1) - teamWhite.get(i).y;
+        }
+        // For every member not on the board add the max amount to the distance
+        for (int i = teamWhite.size(); i < curBoard.size; i++) {
+            whiteDis += 6;
+        }
+        
+        for (int i = 0; i < teamBlack.size(); i++) {    // Black pawns.
+            blackDis += teamBlack.get(i).y - 1;
+        }
+        // For every member not on the board add the max amount to the distance
+        for (int i = teamBlack.size(); i < curBoard.size; i++) {
+            blackDis += 6;
+        }
+        
+        // If black has more distance to go then the result is more positive
+        sizeDif += (blackDis - whiteDis);
+        
+        
+        // TODO: take into account pawns that have dirrect access to the end zone on the opposing team
+        // TODO: add better evaluation
         return sizeDif;
     }
 
