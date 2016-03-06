@@ -7,8 +7,8 @@ package Search;
 
 import PawnGame.Board;
 import PawnGame.Game;
-import PawnGame.GameImp;
 import PawnGame.GameState;
+import Tree.AlphaBetaNode;
 import Tree.TreeNode;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -17,20 +17,20 @@ import java.util.Iterator;
  *
  * @author Vladimir
  */
-public class MinMax {
+public class AlphaBeta {
     
     Game curGame;
     
-    public MinMax (Game inGame) {
+    public AlphaBeta (Game inGame) {
        curGame = inGame;
     }
     
     public GameState search (GameState curBoard, boolean MaxGoesFirst) {
-        TreeNode searchNode = new TreeNode(curBoard, 0);
-        return this.MinMaxValue(searchNode, MaxGoesFirst).data;
+        AlphaBetaNode searchNode = new AlphaBetaNode(curBoard, 0, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        return this.AlphaBetaValue(searchNode, MaxGoesFirst).data;
     }
     
-    public TreeNode MinMaxValue (TreeNode curNode, boolean MaxGoesFirst) {
+    public AlphaBetaNode AlphaBetaValue (AlphaBetaNode curNode, boolean MaxGoesFirst) {
         if (!MaxGoesFirst) { // Black turn
             return MinValue(curNode);
         } else {
@@ -38,58 +38,67 @@ public class MinMax {
         }
     }
     
-    public TreeNode MaxValue (TreeNode curNode) {
+    public AlphaBetaNode MaxValue (AlphaBetaNode curNode) {
         if (curGame.TerminalState(curNode.data)) {
             curNode.value = curGame.Utility(curNode.data); // Save utility as min/max value
             return curNode;
-        } else if (curNode.depth == ((Board)curNode.data).getSize()) {
+        } else if (curNode.depth == 7) {
             curNode.value = curGame.Evaluate(curNode.data);
             return curNode;
         }
         
         ArrayList<GameState> successors = curGame.Successors(curNode.data);
-        TreeNode best = null;
+        AlphaBetaNode best = null;
         int bestValue = Integer.MIN_VALUE;
         Iterator<GameState> it = successors.iterator();
         
         while (it.hasNext()) {
             GameState curBoard = it.next();
-            TreeNode workingNode = new TreeNode(curBoard, curNode.depth + 1);
-            TreeNode n = MinValue(workingNode);
+            AlphaBetaNode workingNode = new AlphaBetaNode(curBoard, curNode.depth + 1, curNode.alpha, curNode.beta);
+            AlphaBetaNode n = MinValue(workingNode);
             if (n.value > bestValue) {
                 bestValue = n.value;
                 workingNode.value = bestValue;
                 best = workingNode;
+            }
+            
+            curNode.alpha = bestValue;
+            if (n.value >= curNode.beta) {
+                break;
             }
         }
         
         return best;
     }
     
-    public TreeNode MinValue (TreeNode curNode) {
+    public AlphaBetaNode MinValue (AlphaBetaNode curNode) {
         if (curGame.TerminalState(curNode.data)) {
             curNode.value = curGame.Utility(curNode.data); // Save utility as min/max value
             return curNode;
-        } else if (curNode.depth == ((Board)curNode.data).getSize()) {
+        } else if (curNode.depth == 7) {
             curNode.value = curGame.Evaluate(curNode.data);
             return curNode;
         }
         
         ArrayList<GameState> successors = curGame.Successors(curNode.data);
-        TreeNode best = null;
+        AlphaBetaNode best = null;
         int bestValue = Integer.MAX_VALUE;
         Iterator<GameState> it = successors.iterator();
         
         while (it.hasNext()) {
             GameState curBoard = it.next();
-            TreeNode workingNode = new TreeNode(curBoard, curNode.depth + 1);
-            TreeNode n = MaxValue(workingNode);
+            AlphaBetaNode workingNode = new AlphaBetaNode(curBoard, curNode.depth + 1, curNode.alpha, curNode.beta);
+            AlphaBetaNode n = MaxValue(workingNode);
             if (n.value < bestValue) {
                 bestValue = n.value;
                 workingNode.value = bestValue;
                 best = workingNode;
             }
             
+            curNode.beta = bestValue;
+            if (n.value <= curNode.alpha) {
+                break;
+            }
         }
         
         return best;

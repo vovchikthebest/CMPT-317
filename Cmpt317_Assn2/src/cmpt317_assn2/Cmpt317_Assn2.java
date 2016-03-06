@@ -8,6 +8,7 @@ package cmpt317_assn2;
 import PawnGame.Board;
 import PawnGame.GameImp;
 import PawnGame.GameState;
+import Search.AlphaBeta;
 import Search.MinMax;
 import Tree.TreeNode;
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ public class Cmpt317_Assn2 {
     public static void main(String[] args) {
         GameImp test = new GameImp();
         Board testBoard = new Board(6, false);
-        MinMax testMinMax = new MinMax(test);
+        AlphaBeta testMinMax = new AlphaBeta(test);
         
         int size = 24;
     

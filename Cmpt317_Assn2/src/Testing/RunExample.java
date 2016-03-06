@@ -48,13 +48,13 @@ public class RunExample {
 	break;
     }
     
-    MinMax searcher = new MinMax(game);
+    AlphaBeta searcher = new AlphaBeta(game);
     
     int size = 4;
     
     GameState[] move = new GameState[size];
     
-    boolean alternate = false;
+    boolean alternate = true;
     
     move[0] = searcher.search(((TrivGame)game).Initialize(),alternate);
     
