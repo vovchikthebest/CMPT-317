@@ -39,16 +39,17 @@ public class AlphaBeta {
     }
     
     public AlphaBetaNode MaxValue (AlphaBetaNode curNode) {
+        ArrayList<GameState> successors = curGame.Successors(curNode.data);
+        
         if (curGame.TerminalState(curNode.data)) {
             curNode.value = curGame.Utility(curNode.data); // Save utility as min/max value
             return curNode;
-        } else if (curNode.depth == 7) {
+        } else if (curNode.depth == 10) {
             curNode.value = curGame.Evaluate(curNode.data);
             return curNode;
         }
         
-        ArrayList<GameState> successors = curGame.Successors(curNode.data);
-        AlphaBetaNode best = null;
+        AlphaBetaNode best = new AlphaBetaNode(successors.get(0), curNode.depth + 1, curNode.alpha, curNode.beta);
         int bestValue = Integer.MIN_VALUE;
         Iterator<GameState> it = successors.iterator();
         
@@ -72,16 +73,17 @@ public class AlphaBeta {
     }
     
     public AlphaBetaNode MinValue (AlphaBetaNode curNode) {
+        ArrayList<GameState> successors = curGame.Successors(curNode.data);
+        
         if (curGame.TerminalState(curNode.data)) {
             curNode.value = curGame.Utility(curNode.data); // Save utility as min/max value
             return curNode;
-        } else if (curNode.depth == 7) {
+        } else if (curNode.depth == 10) {
             curNode.value = curGame.Evaluate(curNode.data);
             return curNode;
         }
         
-        ArrayList<GameState> successors = curGame.Successors(curNode.data);
-        AlphaBetaNode best = null;
+        AlphaBetaNode best = new AlphaBetaNode(successors.get(0), curNode.depth + 1, curNode.alpha, curNode.beta);
         int bestValue = Integer.MAX_VALUE;
         Iterator<GameState> it = successors.iterator();
         

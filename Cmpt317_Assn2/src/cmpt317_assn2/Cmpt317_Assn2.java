@@ -26,27 +26,24 @@ public class Cmpt317_Assn2 {
         GameImp test = new GameImp();
         Board testBoard = new Board(6, false);
         AlphaBeta testMinMax = new AlphaBeta(test);
-        
-        int size = 24;
     
-        GameState[] move = new GameState[size];
+        ArrayList<GameState> move = new ArrayList();
     
         boolean alternate = true;
     
-        move[0] = testMinMax.search(testBoard,alternate);
-    
-    
-        for (int i = 1; i < move.length; i++) {
+        move.add(testMinMax.search(testBoard,alternate));
+        int i = 1;
+        
+        while (!((Board)move.get(i-1)).getFinished()) {
             alternate = !alternate;
-            move[i] = testMinMax.search(move[i-1],alternate);
+            move.add(testMinMax.search(move.get(i-1),alternate));
+            i++;
         }
 
         System.out.println("next state: ");
     
-        for (int i = 0; i < move.length; i++) {
-            move[i].display();
-            System.out.printf("\n");
-        }
+        System.out.println(move);
+        System.out.println("Amount of turns: " + move.size());
     }
     
 }
