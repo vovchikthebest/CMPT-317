@@ -39,15 +39,16 @@ public class MinMax {
     }
     
     public TreeNode MaxValue (TreeNode curNode) {
+        ArrayList<GameState> successors = curGame.Successors(curNode.data);
+        
         if (curGame.TerminalState(curNode.data)) {
             curNode.value = curGame.Utility(curNode.data); // Save utility as min/max value
             return curNode;
-        } else if (curNode.depth == ((Board)curNode.data).getSize()) {
+        } else if (curNode.depth == 6) {
             curNode.value = curGame.Evaluate(curNode.data);
             return curNode;
         }
         
-        ArrayList<GameState> successors = curGame.Successors(curNode.data);
         TreeNode best = null;
         int bestValue = Integer.MIN_VALUE;
         Iterator<GameState> it = successors.iterator();
@@ -67,15 +68,16 @@ public class MinMax {
     }
     
     public TreeNode MinValue (TreeNode curNode) {
+        ArrayList<GameState> successors = curGame.Successors(curNode.data);
+        
         if (curGame.TerminalState(curNode.data)) {
             curNode.value = curGame.Utility(curNode.data); // Save utility as min/max value
             return curNode;
-        } else if (curNode.depth == ((Board)curNode.data).getSize()) {
+        } else if (curNode.depth == 6) {
             curNode.value = curGame.Evaluate(curNode.data);
             return curNode;
         }
         
-        ArrayList<GameState> successors = curGame.Successors(curNode.data);
         TreeNode best = null;
         int bestValue = Integer.MAX_VALUE;
         Iterator<GameState> it = successors.iterator();

@@ -25,25 +25,49 @@ public class Cmpt317_Assn2 {
     public static void main(String[] args) {
         GameImp test = new GameImp();
         Board testBoard = new Board(6, false);
-        AlphaBeta testMinMax = new AlphaBeta(test);
+        AlphaBeta testAlphaBeta = new AlphaBeta(test);
+        MinMax testMinMax = new MinMax(test);
     
-        ArrayList<GameState> move = new ArrayList();
+        ArrayList<GameState> moveAlpha = new ArrayList();
+        ArrayList<GameState> moveMinMax = new ArrayList();
     
+        // Testing for Alpha Beta pruning
+        long startTime1 = System.nanoTime();
         boolean alternate = true;
-    
-        move.add(testMinMax.search(testBoard,alternate));
+        moveAlpha.add(testAlphaBeta.search(testBoard,alternate));
         int i = 1;
         
-        while (!((Board)move.get(i-1)).getFinished()) {
+        while (!((Board)moveAlpha.get(i-1)).getFinished()) {
             alternate = !alternate;
-            move.add(testMinMax.search(move.get(i-1),alternate));
+            moveAlpha.add(testAlphaBeta.search(moveAlpha.get(i-1),alternate));
             i++;
         }
-
-        System.out.println("next state: ");
+        long endTime1 = System.nanoTime();
+        System.out.println("Moves made with alpha beta pruning: ");
     
-        System.out.println(move);
-        System.out.println("Amount of turns: " + move.size());
+        System.out.println(moveAlpha);
+        System.out.println("Amount of turns: " + moveAlpha.size());
+        long duration1 = (endTime1 - startTime1)/1000000000;
+        
+        // Testing for min and max
+        long startTime2 = System.nanoTime();
+        alternate = true;
+        moveMinMax.add(testMinMax.search(testBoard,alternate));
+        i = 1;
+        
+        while (!((Board)moveMinMax.get(i-1)).getFinished()) {
+            alternate = !alternate;
+            moveMinMax.add(testMinMax.search(moveMinMax.get(i-1),alternate));
+            i++;
+        }
+        long endTime2 = System.nanoTime();
+        System.out.println("Moves made with minimax: ");
+    
+        System.out.println(moveMinMax);
+        System.out.println("Amount of turns: " + moveMinMax.size());
+        long duration2 = (endTime2 - startTime2)/1000000000;
+        
+        System.out.println("MinMax time: " + duration2 + " ; Alpha-Beta time:" + duration1);
     }
     
 }

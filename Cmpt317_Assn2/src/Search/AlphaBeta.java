@@ -44,7 +44,7 @@ public class AlphaBeta {
         if (curGame.TerminalState(curNode.data)) {
             curNode.value = curGame.Utility(curNode.data); // Save utility as min/max value
             return curNode;
-        } else if (curNode.depth == 10) {
+        } else if (curNode.depth == 6) {
             curNode.value = curGame.Evaluate(curNode.data);
             return curNode;
         }
@@ -78,7 +78,7 @@ public class AlphaBeta {
         if (curGame.TerminalState(curNode.data)) {
             curNode.value = curGame.Utility(curNode.data); // Save utility as min/max value
             return curNode;
-        } else if (curNode.depth == 10) {
+        } else if (curNode.depth == 6) {
             curNode.value = curGame.Evaluate(curNode.data);
             return curNode;
         }
