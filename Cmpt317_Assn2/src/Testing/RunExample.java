@@ -17,6 +17,8 @@
 
 
 
+import PawnGame.Game;
+import PawnGame.GameState;
 import Search.*;
 
 import java.util.Random;
@@ -25,18 +27,10 @@ public class RunExample {
 
   public static void main(String[] args) {
 
-    if (args.length == 0) {
-      System.out.println("usage: java RunExample <e> <a>\n"
-	  + "  where <e> is the example and <a> is the algorithm");
-      System.exit(0);
-    }
-
     int argc = 0;
-    int ex = Integer.parseInt(args[argc++]);
-    int alg = Integer.parseInt(args[argc++]);
+    int ex = 2;
 
     Game game;
-    GameTreeSearch searcher;
 
     switch (ex) {
       case 1:
@@ -53,21 +47,28 @@ public class RunExample {
 	game = Example4.createExample();
 	break;
     }
-
-    switch (alg) {
-      case 1: 
-      default: 
-	searcher = new Minimax(game);
-	break;
-      case 2: 
-	searcher = new AlphaBeta(game);
-	break;
+    
+    MinMax searcher = new MinMax(game);
+    
+    int size = 4;
+    
+    GameState[] move = new GameState[size];
+    
+    boolean alternate = false;
+    
+    move[0] = searcher.search(((TrivGame)game).Initialize(),alternate);
+    
+    
+    for (int i = 1; i < move.length; i++) {
+        alternate = !alternate;
+        move[i] = searcher.search(move[i-1],alternate);
     }
 
-    GameState move = searcher.Search(game.Initialize(),true);
-
     System.out.println("next state: ");
-    move.display();
+    
+    for (int i = 0; i < move.length; i++) {
+        move[i].display();
+    }
   }
 }
 // eof

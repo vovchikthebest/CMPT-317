@@ -46,6 +46,8 @@ public interface Game {
    *
    * */
   public int Utility(GameState s);
+  
+  public int Evaluate(GameState s);
 
 }
 // eof

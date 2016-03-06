@@ -3,6 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package PawnGame;
 
 import Tree.TreeNode;
@@ -17,6 +18,9 @@ import java.util.Queue;
 public class GameImp implements Game {
 
     ArrayList<Pawn> teamWhite, teamBlack;
+    
+    private static final int MAX = 10;
+    private static final int MIN = -10;
 
     public ArrayList<Board> pawnSuccessor(Pawn inPawn, Board curBoard) {
         ArrayList<Board> possibleMoves = new ArrayList<Board>();
@@ -29,7 +33,7 @@ public class GameImp implements Game {
                 cloned.gameBoard[inPawn.x][inPawn.y + 1] = 1;
                 // Check if white has reached endzone
                 if (inPawn.y + 1 == curBoard.size - 1) {
-                    cloned.winner = 1;
+                    cloned.winner = MAX;
                     cloned.finished = true;
                 }
                 possibleMoves.add(cloned);
@@ -42,7 +46,7 @@ public class GameImp implements Game {
                 cloned.gameBoard[inPawn.x][inPawn.y - 1] = 2;
                 // Check if black has reached endzone
                 if (inPawn.y - 1 == 0) {
-                    cloned.winner = -1;
+                    cloned.winner = MIN;
                     cloned.finished = true;
                 }
                 possibleMoves.add(cloned);
@@ -65,11 +69,11 @@ public class GameImp implements Game {
                 cloned.gameBoard[inPawn.x][inPawn.y] = 0;
                 cloned.gameBoard[inPawn.x - 1][inPawn.y + 1] = 1;
                 if (inPawn.y + 1 == curBoard.size - 1) {    // Moves into endzone while eating a piece
-                    cloned.winner = 1;
+                    cloned.winner = MAX;
                     cloned.finished = true;
                 }
                 if (teamBlack.size() == 1) {    // check if the board has no more black pieces
-                    cloned.winner = 1;
+                    cloned.winner = MAX;
                     cloned.finished = true;
                 }
                 possibleMoves.add(cloned);
@@ -80,11 +84,11 @@ public class GameImp implements Game {
                 cloned.gameBoard[inPawn.x][inPawn.y] = 0;
                 cloned.gameBoard[inPawn.x + 1][inPawn.y + 1] = 1;
                 if (inPawn.y + 1 == curBoard.size - 1) {    // Moves into endzone while eating a piece
-                    cloned.winner = 1;
+                    cloned.winner = MAX;
                     cloned.finished = true;
                 }
                 if (teamBlack.size() == 1) {    // check if the board has no more black pieces
-                    cloned.winner = 1;
+                    cloned.winner = MAX;
                     cloned.finished = true;
                 }
                 possibleMoves.add(cloned);
@@ -104,11 +108,11 @@ public class GameImp implements Game {
                 cloned.gameBoard[inPawn.x][inPawn.y] = 0;
                 cloned.gameBoard[inPawn.x - 1][inPawn.y - 1] = 2;
                 if (inPawn.y - 1 == 0) {    // Moves into endzone while eating a piece
-                    cloned.winner = -1;
+                    cloned.winner = MIN;
                     cloned.finished = true;
                 }
                 if (teamWhite.size() == 1) {    // check if the board has no more white pieces
-                    cloned.winner = -1;
+                    cloned.winner = MIN;
                     cloned.finished = true;
                 }
                 possibleMoves.add(cloned);
@@ -119,18 +123,15 @@ public class GameImp implements Game {
                 cloned.gameBoard[inPawn.x][inPawn.y] = 0;
                 cloned.gameBoard[inPawn.x + 1][inPawn.y - 1] = 2;
                 if (inPawn.y - 1 == 0) {    // Moves into endzone while eating a piece
-                    cloned.winner = -1;
+                    cloned.winner = MIN;
                     cloned.finished = true;
                 }
                 if (teamWhite.size() == 1) {    // check if the board has no more white pieces
-                    cloned.winner = -1;
+                    cloned.winner = MIN;
                     cloned.finished = true;
                 }
                 possibleMoves.add(cloned);
             }
-        }
-        if (possibleMoves.size() == 0) {
-            curBoard.finished = true;
         }
         return possibleMoves;
     }
@@ -154,6 +155,10 @@ public class GameImp implements Game {
             for (int i = 0; i < teamBlack.size(); i++) {
                 result.addAll(this.pawnSuccessor(teamBlack.get(i), curBoard));
             }
+        }
+        
+        if (result.isEmpty()) {
+            curBoard.finished = true;
         }
 
         return result;
@@ -182,8 +187,17 @@ public class GameImp implements Game {
     */
     
     public int Utility (GameState s) {
-        Board curBoard = (Board) s;
+        Board curBoard = (Board) s; 
         return curBoard.winner;
+    }
+    
+    public int Evaluate (GameState s) {
+        Board curBoard = (Board) s;
+        this.createPawnArray(curBoard);
+        
+        int sizeDif = teamWhite.size() - teamBlack.size();
+        
+        return sizeDif;
     }
 
     // Creates the arrays of pawns from the board given

@@ -16,7 +16,10 @@
 ////////////////////////////////////////////////////////
 
 
+import PawnGame.Game;
+import PawnGame.GameState;
 import Search.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 /** The class defines a "game" that can be expressed as an
@@ -49,6 +52,11 @@ import java.util.LinkedList;
  */
 
 public class TrivGame implements Game {
+
+    @Override
+    public int Evaluate(GameState s) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
   // first, represent the states of the game
 
@@ -115,11 +123,11 @@ public class TrivGame implements Game {
   /** Return a list of GameStates that are 
    *  immediate successors of the given GameState.
    *  */
-  public LinkedList<GameState>   Successors(GameState p) {
+  public ArrayList<GameState>   Successors(GameState p) {
     TrivState t = (TrivState) p;
-    LinkedList<GameState> successors = new LinkedList<GameState>();
+    ArrayList<GameState> successors = new ArrayList<GameState>();
     for (int s : m_SUCCESSORS[t.m_state]) {
-      successors.addLast(new TrivState(s));
+      successors.add(new TrivState(s));
     }
     return successors;
   }
@@ -129,10 +137,10 @@ public class TrivGame implements Game {
    * @param GameState state
    *
    * */
-  public double Utility(GameState s) {
+  public int Utility(GameState s) {
     TrivState t = (TrivState) s;
     System.out.println(m_UTILITY[t.m_state-m_TERMINAL]);
-    return m_UTILITY[t.m_state-m_TERMINAL]; 
+    return (int) m_UTILITY[t.m_state-m_TERMINAL]; 
   }
 
 }

@@ -24,10 +24,28 @@ public class Cmpt317_Assn2 {
     public static void main(String[] args) {
         GameImp test = new GameImp();
         Board testBoard = new Board(6, false);
-        ArrayList<GameState> tester = test.Successors(testBoard);
-        //MinMax testMinMax = new MinMax();
+        MinMax testMinMax = new MinMax(test);
         
-        System.out.println(tester);
+        int size = 10;
+    
+        GameState[] move = new GameState[size];
+    
+        boolean alternate = true;
+    
+        move[0] = testMinMax.search(testBoard,alternate);
+    
+    
+        for (int i = 1; i < move.length; i++) {
+            alternate = !alternate;
+            move[i] = testMinMax.search(move[i-1],alternate);
+        }
+
+        System.out.println("next state: ");
+    
+        for (int i = 0; i < move.length; i++) {
+            move[i].display();
+            System.out.printf("\n");
+        }
     }
     
 }
