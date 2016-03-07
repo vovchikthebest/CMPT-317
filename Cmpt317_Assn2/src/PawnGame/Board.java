@@ -58,11 +58,26 @@ public class Board implements GameState{
     public String toString() {
         String result = "";
         for (int i = this.size-1; i >= 0; i--) {
+            result += i + " | ";
             for (int j = 0; j < this.size; j++) {
-                result += String.valueOf(this.gameBoard[j][i]) + " ";
+                if (this.gameBoard[j][i] == 1) {
+                    result += "X" + " ";
+                } else if (this.gameBoard[j][i] == 2) {
+                    result += "O" + " ";
+                } else {
+                    result += "-" + " ";
+                }
             }
             result += "\n";
         }
+        for (int i = 0; i < this.size; i++) {
+            result += "---";
+        }
+        result += "\n    ";
+        for (int i = 0; i < this.size; i++) {
+            result += i + " ";
+        }
+        result += "\n";
         
         return result;
     }

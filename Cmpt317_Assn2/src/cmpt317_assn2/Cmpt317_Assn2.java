@@ -8,6 +8,7 @@ package cmpt317_assn2;
 import PawnGame.Board;
 import PawnGame.GameImp;
 import PawnGame.GameState;
+import PawnGame.PlayGame;
 import Search.AlphaBeta;
 import Search.MinMax;
 import Tree.TreeNode;
@@ -68,6 +69,9 @@ public class Cmpt317_Assn2 {
         long duration2 = (endTime2 - startTime2)/1000000000;
         
         System.out.println("MinMax time: " + duration2 + " ; Alpha-Beta time:" + duration1);
+        
+        PlayGame playTester = new PlayGame(test, testBoard, true);
+        playTester.play();
     }
     
 }
