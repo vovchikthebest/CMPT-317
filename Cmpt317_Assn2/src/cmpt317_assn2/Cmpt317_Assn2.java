@@ -26,69 +26,71 @@ public class Cmpt317_Assn2 {
     public static void main(String[] args) {
         GameImp testGame = new GameImp();
         Board testBoard = new Board(6, false);
-        
-        int maxDepth = 8;
-        
+
+        int maxDepth = 6;
+
         AlphaBeta testAlphaBeta = new AlphaBeta(testGame, maxDepth);
         MinMax testMinMax = new MinMax(testGame, maxDepth);
-    
+
         ArrayList<GameState> moveAlpha = new ArrayList();
         ArrayList<GameState> moveMinMax = new ArrayList();
-    
+
         // Testing for Alpha Beta pruning
         boolean alternate = true;
         long moveStart = System.nanoTime();
-        moveAlpha.add(testAlphaBeta.search(testBoard,alternate));
+        moveAlpha.add(testAlphaBeta.search(testBoard, alternate));
         long moveEnd = System.nanoTime();
-        
-        long totalAlphaBeta = (moveEnd - moveStart)/1000000;
-                
+
+        long totalAlphaBeta = (moveEnd - moveStart) / 1000000;
+
         int i = 1;
-        
-        while (!((Board)moveAlpha.get(i-1)).getFinished()) {
+
+        while (!((Board) moveAlpha.get(i - 1)).getFinished()) {
             alternate = !alternate;
             moveStart = System.nanoTime();
-            moveAlpha.add(testAlphaBeta.search(moveAlpha.get(i-1),alternate));
+            moveAlpha.add(testAlphaBeta.search(moveAlpha.get(i - 1), alternate));
             moveEnd = System.nanoTime();
-            
-            totalAlphaBeta += (moveEnd - moveStart)/1000000;
-            
-            if ((totalAlphaBeta/moveAlpha.size()) > 10000) {
+
+            totalAlphaBeta += (moveEnd - moveStart) / 1000000;
+
+            if ((totalAlphaBeta / moveAlpha.size()) > 5000) {
+                System.out.println("Alpha Beta timed out!!");
                 break;
             }
-            
+
             i++;
         }
-        
+
         // Testing for min and max
         alternate = true;
         moveStart = System.nanoTime();
-        moveMinMax.add(testMinMax.search(testBoard,alternate));
+        moveMinMax.add(testMinMax.search(testBoard, alternate));
         moveEnd = System.nanoTime();
-        
-        long totalMinMax = (moveEnd - moveStart)/1000000;
-        
+
+        long totalMinMax = (moveEnd - moveStart) / 1000000;
+
         i = 1;
-        
-        while (!((Board)moveMinMax.get(i-1)).getFinished()) {
+
+        while (!((Board) moveMinMax.get(i - 1)).getFinished()) {
             alternate = !alternate;
             moveStart = System.nanoTime();
-            moveMinMax.add(testMinMax.search(moveMinMax.get(i-1),alternate));
+            moveMinMax.add(testMinMax.search(moveMinMax.get(i - 1), alternate));
             moveEnd = System.nanoTime();
-            
-            totalMinMax += (moveEnd - moveStart)/1000000;
-            
-            if ((totalMinMax/moveMinMax.size()) > 10000) {
+
+            totalMinMax += (moveEnd - moveStart) / 1000000;
+
+            if ((totalMinMax / moveMinMax.size()) > 5000) {
+                System.out.println("Min Max timed out!");
                 break;
             }
-            
+
             i++;
         }
-        
-        System.out.println("MinMax time per turn: " + totalMinMax/moveMinMax.size() + " ; Alpha-Beta time per turn:" + totalAlphaBeta/moveAlpha.size());
-        
-        //PlayGame playTester = new PlayGame(test, testBoard, true, maxDepth);
-        //playTester.play();
+
+        System.out.println("MinMax time per turn: " + totalMinMax / moveMinMax.size() + " ; Alpha-Beta time per turn:" + totalAlphaBeta / moveAlpha.size());
+
+        PlayGame playTester = new PlayGame(testGame, testBoard, true, maxDepth);
+        playTester.play();
     }
-    
+
 }

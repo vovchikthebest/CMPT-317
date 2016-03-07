@@ -31,7 +31,7 @@ public class PlayGame {
     public void play() {
         Scanner scanner = new Scanner(System.in);
         
-        if (curBoard.turn == false) {
+        if (playAsBlack == false) {
             System.out.println("Playing as X (white)");
         } else {
             System.out.println("Playing as O (black)");

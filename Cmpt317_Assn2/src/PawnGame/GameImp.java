@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package PawnGame;
 
 import java.util.ArrayList;
@@ -15,7 +14,7 @@ import java.util.ArrayList;
 public class GameImp implements Game {
 
     ArrayList<Pawn> teamWhite, teamBlack;
-    
+
     private static final int MAX = 30;
     private static final int MIN = -30;
 
@@ -153,27 +152,47 @@ public class GameImp implements Game {
                 result.addAll(this.pawnSuccessor(teamBlack.get(i), curBoard));
             }
         }
-        
+
         if (result.isEmpty()) {
-            curBoard.finished = true;
+            if (curBoard.turn == false) {   // Determine if there is still a move that can be made for the opposite team
+                for (int i = 0; i < teamBlack.size(); i++) {
+                    if (!this.pawnSuccessor(teamBlack.get(i), curBoard).isEmpty()) {
+                        result.add(curBoard);
+                        curBoard.finished = false;
+                        break;
+                    } else {
+                        curBoard.finished = true;
+                    }
+                }
+            } else {
+                for (int i = 0; i < teamWhite.size(); i++) {
+                    if (!this.pawnSuccessor(teamWhite.get(i), curBoard).isEmpty()) {
+                        result.add(curBoard);
+                        curBoard.finished = false;
+                        break;
+                    } else {
+                        curBoard.finished = true;
+                    }
+                }
+            }
         }
 
         return result;
     }
-    
+
     @Override
-    public int Utility (GameState s) {
-        Board curBoard = (Board) s; 
+    public int Utility(GameState s) {
+        Board curBoard = (Board) s;
         return curBoard.winner;
     }
-    
-    public int Evaluate (GameState s) {
+
+    public int Evaluate(GameState s) {
         Board curBoard = (Board) s;
         this.createPawnArray(curBoard);
-        
+
         // Amount of pawns left on each team
         int sizeDif = teamWhite.size() - teamBlack.size();
-        
+
         // Amount of distance left to the end zones
         int whiteDis = 0, blackDis = 0;
         for (int i = 0; i < teamWhite.size(); i++) {    // White pawns.
@@ -183,7 +202,7 @@ public class GameImp implements Game {
         for (int i = teamWhite.size(); i < curBoard.size; i++) {
             whiteDis += 6;
         }
-        
+
         for (int i = 0; i < teamBlack.size(); i++) {    // Black pawns.
             blackDis += teamBlack.get(i).y - 1;
         }
@@ -191,18 +210,16 @@ public class GameImp implements Game {
         for (int i = teamBlack.size(); i < curBoard.size; i++) {
             blackDis += 6;
         }
-        
+
         // If black has more distance to go then the result is more positive
         sizeDif += (blackDis - whiteDis);
-        
-        
+
         // TODO: take into account pawns that have dirrect access to the end zone on the opposing team
         // TODO: add better evaluation
         return sizeDif;
     }
 
     // Creates the arrays of pawns from the board given
-
     public void createPawnArray(Board curBoard) {
         teamWhite = new ArrayList<Pawn>();
         teamBlack = new ArrayList<Pawn>();
