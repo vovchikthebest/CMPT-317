@@ -20,9 +20,11 @@ import java.util.Iterator;
 public class AlphaBeta {
     
     Game curGame;
+    int maxDepth;
     
-    public AlphaBeta (Game inGame) {
+    public AlphaBeta (Game inGame, int inMaxDepth) {
        curGame = inGame;
+       maxDepth = inMaxDepth;
     }
     
     public GameState search (GameState curBoard, boolean MaxGoesFirst) {
@@ -44,7 +46,7 @@ public class AlphaBeta {
         if (curGame.TerminalState(curNode.data)) {
             curNode.value = curGame.Utility(curNode.data); // Save utility as min/max value
             return curNode;
-        } else if (curNode.depth == 6) {
+        } else if (curNode.depth == maxDepth) {
             curNode.value = curGame.Evaluate(curNode.data);
             return curNode;
         }
@@ -78,7 +80,7 @@ public class AlphaBeta {
         if (curGame.TerminalState(curNode.data)) {
             curNode.value = curGame.Utility(curNode.data); // Save utility as min/max value
             return curNode;
-        } else if (curNode.depth == 6) {
+        } else if (curNode.depth == maxDepth) {
             curNode.value = curGame.Evaluate(curNode.data);
             return curNode;
         }

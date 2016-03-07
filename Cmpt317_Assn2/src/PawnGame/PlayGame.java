@@ -19,11 +19,13 @@ public class PlayGame {
     GameImp curGame;
     Board curBoard;
     boolean playAsBlack;    // true - play as black, false - play as white
+    int maxDepth;
 
-    public PlayGame(GameImp inGame, Board inBoard, boolean play) {
+    public PlayGame(GameImp inGame, Board inBoard, boolean play, int inMaxDepth) {
         curGame = inGame;
         curBoard = inBoard;
         playAsBlack = play;
+        maxDepth = inMaxDepth;
     }
 
     public void play() {
@@ -74,7 +76,7 @@ public class PlayGame {
                     System.out.println("Not a valid move");
                 }
             } else {
-                AlphaBeta alphaBeta = new AlphaBeta(curGame);
+                AlphaBeta alphaBeta = new AlphaBeta(curGame, maxDepth);
                 curBoard = (Board) alphaBeta.search(curBoard, false);
             }
         }

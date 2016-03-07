@@ -24,10 +24,13 @@ public class Cmpt317_Assn2 {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        GameImp test = new GameImp();
+        GameImp testGame = new GameImp();
         Board testBoard = new Board(6, false);
-        AlphaBeta testAlphaBeta = new AlphaBeta(test);
-        MinMax testMinMax = new MinMax(test);
+        
+        int maxDepth = 8;
+        
+        AlphaBeta testAlphaBeta = new AlphaBeta(testGame, maxDepth);
+        MinMax testMinMax = new MinMax(testGame, maxDepth);
     
         ArrayList<GameState> moveAlpha = new ArrayList();
         ArrayList<GameState> moveMinMax = new ArrayList();
@@ -50,6 +53,10 @@ public class Cmpt317_Assn2 {
             
             totalAlphaBeta += (moveEnd - moveStart)/1000000;
             
+            if ((totalAlphaBeta/moveAlpha.size()) > 10000) {
+                break;
+            }
+            
             i++;
         }
         
@@ -71,12 +78,16 @@ public class Cmpt317_Assn2 {
             
             totalMinMax += (moveEnd - moveStart)/1000000;
             
+            if ((totalMinMax/moveMinMax.size()) > 10000) {
+                break;
+            }
+            
             i++;
         }
         
         System.out.println("MinMax time per turn: " + totalMinMax/moveMinMax.size() + " ; Alpha-Beta time per turn:" + totalAlphaBeta/moveAlpha.size());
         
-        //PlayGame playTester = new PlayGame(test, testBoard, true);
+        //PlayGame playTester = new PlayGame(test, testBoard, true, maxDepth);
         //playTester.play();
     }
     

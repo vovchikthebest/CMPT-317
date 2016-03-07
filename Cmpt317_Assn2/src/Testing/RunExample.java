@@ -48,7 +48,7 @@ public class RunExample {
 	break;
     }
     
-    AlphaBeta searcher = new AlphaBeta(game);
+    AlphaBeta searcher = new AlphaBeta(game, 6);
     
     int size = 4;
     
